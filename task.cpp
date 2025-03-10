@@ -4,129 +4,138 @@
 
 using namespace std;
 
-// Гарааны хоосон утгуудыг шинжүүдэд онооно
-void employee::setInitial() {
-    emp_id=0;
-    strcpy(emp_name, "");
-    strcpy(emp_role, "ajilchin");
-    emp_work_time=0;
-    emp_hourly_rate=10000;
+employee::employee()
+{
+    emp_id = 0;
+    strcpy(emp_name, "Empty");
+    strcpy(emp_role, "Worker");
+    emp_work_time = 0;
+    emp_hourly_rate = 5000;
 }
 
-// Гараас утгуудыг авч шинжүүдэд хадгална
-void employee::getData() {
-    char name[20];
-    bool status;
-    cout << "Ajilchnii dugaariig oruulna uu?" << endl;
-    cin >> emp_id;
-
-    cout << "Ajilchnii neriig oruulna uu?" << endl;
-    cin >> name;
+employee::employee(int id = 0, char* name = NULL, char* role = NULL, float work_time = 0, float hourly_rate = 5000)
+{
+    emp_id = id;
     strcpy(emp_name, name);
-
-    cout << "Ajilchingaas uur alban tushaaltai bol 1, ugui bol 0 gej oruulna uu?" << endl;
-    cin >> status;
-    if (status==1) {
-        char role[10];
-        cout << "Alban tushaaliig oruulna uu?" << endl;
-        cin >> role;
-        strcpy(emp_role, role);
-    }
-    cout << endl;
+    strcpy(emp_role, role);
+    emp_work_time = work_time;
+    emp_hourly_rate = hourly_rate;
 }
 
-// Шинжүүдийн утгуудыг хэрэглэгчид ойлгомжтойгоор хэвлэнэ
-void employee::printData() {
-    cout << emp_id << " dugaartai ajilchnii medeelel:" << endl;
-    cout << "Ner: " << emp_name << endl;
-    cout << "Alban tushaal: " << emp_role << endl;
-    cout << "Ajillasan tsag: " << emp_work_time << endl;
+employee::~employee()
+{
+    cout << emp_id << " id-tai ajiltan ustav" << endl;
 }
 
-// Ажилчны цалинг тооцоолно
-float employee::calcSalary() {
-    float salary = emp_hourly_rate*emp_work_time;
+void employee::printData()
+{
+    cout << get_emp_id() << " id-tai ajilchnii medeelel:" << endl;
+    cout << "Ner: " << get_emp_name() << endl;
+    cout << "Alban tushaal: " << get_emp_role() << endl;
+    cout << "Ajillasan tsag: " << get_emp_work_time() << endl;
+    cout << "Tsagiin orlogo: " << get_emp_hourly_rate() << endl
+         << endl;
+}
 
-    if (strcmp("Zahiral",emp_role)==0 || strcmp("zahiral",emp_role)==0) {
+float employee::calcSalary()
+{
+    float salary = emp_hourly_rate * emp_work_time;
+
+    if (strcmp("Zahiral", emp_role) == 0 || strcmp("zahiral", emp_role) == 0)
+    {
         salary += calcBossSalary();
     }
-    
+
     return (salary);
 }
 
-// Хэрэв захирал тушаалтай бол цалинг тооцоолно
-float employee::calcBossSalary() {
-    return (emp_hourly_rate*emp_work_time*1.5);
+float employee::calcBossSalary()
+{
+    return (emp_hourly_rate * emp_work_time * 1.5);
 }
 
-// Тухайн өдөрт ажилласан цагийг нэмэгдүүлнэ
-bool employee::addWorkTime(float hour) {
+bool employee::addWorkTime(float hour)
+{
     bool ret_value;
-    if (hour<0 || hour>24) {
-        ret_value=0;
-    } else {
-        ret_value=1;
+    if (hour < 0 || hour > 24)
+    {
+        ret_value = 0;
+        cout << "Failed" << endl;
+    }
+    else
+    {
+        ret_value = 1;
         emp_work_time += hour;
+        cout << "Successful" << endl;
     }
 
     return ret_value;
 }
 
+int employee::get_emp_id() { return emp_id; };
+char *employee::get_emp_name() { return emp_name; };
+char *employee::get_emp_role() { return emp_role; };
+float employee::get_emp_work_time() { return emp_work_time; };
+float employee::get_emp_hourly_rate() { return emp_hourly_rate; };
 
-int main() {
-    // 3 ширхэг ажилчин объектуудыг үүсгэнэ
-    employee worker1, worker2, worker3;
+// void employee::set_emp_id();
+void employee::set_emp_name(char name[20])
+{
+    strcpy(emp_name, name);
+};
+void employee::set_emp_role(char role[10])
+{
+    strcpy(emp_role, role);
+};
+// void employee::set_emp_work_time();
+void employee::set_emp_hourly_rate(float rate)
+{
+    emp_hourly_rate = rate;
+};
 
-    // Тус тус гарааны хоосон утгуудыг онооно
-    worker1.setInitial();
-    worker2.setInitial();
-    worker3.setInitial();
+int main()
+{
+    // 100 ширхэг ажилчин объектын хүснэгт үүсгэнэ
+    employee *worker[100]{};
+    int i=0;
+    int choice;
 
-    cout << endl;
+    while (1)
+    {
+        cout << "1. Ajiltan oruulah, 2. Erembelj haruulah, 3. Hevleh, 9. Exit" << endl;
+        cout << "Songoltiig oruul: ";
+        cin >> choice;
+        if (choice == 1)
+        {
+            char name[20];
+            char role[10];
+            float work_time;
+            float hourly_rate;
 
-    // Тус тусын шинжийн утгуудыг гараас авна
-    worker1.getData();
-    worker2.getData();
-    worker3.getData();
+            cout << "Ajilchnii ner: ";
+            cin >> name;
+            cout << "Alban tushaal: ";
+            cin >> role;
+            cout << "Ajillasan tsag: ";
+            cin >> work_time;
+            cout << "Tsagiin orlogo: ";
+            cin >> hourly_rate;
 
-    cout << endl;
+            worker[i] = new employee(i, name, role, work_time, hourly_rate);
+            i++;
 
-    // Гараас ажилласан цагийн утгыг аваад хадгалах хувьсагч
-    float hour;
+            cout << "Successful" << endl << endl;
+        } else if (choice==2) {
 
-    // Гараас авсан цагийн утга зөв утга эсэхийг шалгаж байж давталтаас гарна
-    while (1) {
-        cout << "1-r ajilchnii unuudur ajillasan tsag: " << endl;
-        cin >> hour;
-        if (worker1.addWorkTime(hour)==0) {
-            cout << "Invalid Time" << endl;
-        } else {break;};
-    };
-
-    while(1) {
-        cout << "2-r ajilchnii unuudur ajillasan tsag: " << endl;
-        cin >> hour;
-        if (worker2.addWorkTime(hour)==0) {
-            cout << "Invalid Time" << endl;
-        } else {break;};
+        } else if (choice==3) {
+            for (int n=0; n<=i; n++) {
+                if (worker[n]->get_emp_id()!=0) {
+                    worker[n]->printData();
+                }
+            }
+        } else if (choice==9) {
+            break;
+        }
+        else { cout << "Invalid choice" << endl;}
     }
-
-    while(1) {
-        cout << "3-r ajilchnii unuudur ajillasan tsag: " << endl;
-        cin >> hour;
-        if (worker3.addWorkTime(hour)==0) {
-            cout << "Invalid Time" << endl;
-        } else {break;};
-    }
-    
-
-    cout << endl;
-    // Ажилчны шинжийн утгуудыг тус тус хэвлэхдээ мөн цалинг тооцоолж хэвлэнэ
-    worker1.printData();
-    cout << "Tsalin: " << worker1.calcSalary() << endl << endl;
-    worker2.printData();
-    cout << "Tsalin: " << worker2.calcSalary() << endl << endl;
-    worker3.printData();
-    cout << "Tsalin: " << worker3.calcSalary() << endl << endl;
-
 }
