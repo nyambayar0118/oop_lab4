@@ -7,13 +7,13 @@ using namespace std;
 employee::employee()
 {
     emp_id = 0;
-    strcpy(emp_name, "Empty");
+    strcpy(emp_name, "na");
     strcpy(emp_role, "Worker");
     emp_work_time = 0;
     emp_hourly_rate = 5000;
 }
 
-employee::employee(int id = 0, char* name = NULL, char* role = NULL, float work_time = 0, float hourly_rate = 5000)
+employee::employee(int id = 0, char *name = NULL, char *role = NULL, float work_time = 0, float hourly_rate = 5000)
 {
     emp_id = id;
     strcpy(emp_name, name);
@@ -24,7 +24,7 @@ employee::employee(int id = 0, char* name = NULL, char* role = NULL, float work_
 
 employee::~employee()
 {
-    cout << emp_id << " id-tai ajiltan ustav" << endl;
+        cout << emp_id << " id-tai ajiltan ustav" << endl;
 }
 
 void employee::printData()
@@ -79,11 +79,11 @@ float employee::get_emp_work_time() { return emp_work_time; };
 float employee::get_emp_hourly_rate() { return emp_hourly_rate; };
 
 // void employee::set_emp_id();
-void employee::set_emp_name(char name[20])
+void employee::set_emp_name(char *name)
 {
     strcpy(emp_name, name);
 };
-void employee::set_emp_role(char role[10])
+void employee::set_emp_role(char *role)
 {
     strcpy(emp_role, role);
 };
@@ -93,16 +93,36 @@ void employee::set_emp_hourly_rate(float rate)
     emp_hourly_rate = rate;
 };
 
+// employeeBusiness классын функцийн хэрэгжүүлэлт
+
+void employeeBusiness::sort(employee **workers,int count)
+{
+    if (count<2) {
+        return;
+    }
+
+    for (int i=1; i<count; i++) {
+        employee *temp=workers[i];
+        int j=i-1;
+
+        while (j>=0 && temp->calcSalary() < workers[j]->calcSalary()) {
+            workers[j+1]=workers[j];
+            j--;
+        }
+        workers[j+1]=temp;
+    }
+}
+
 int main()
 {
     // 100 ширхэг ажилчин объектын хүснэгт үүсгэнэ
-    employee *worker[100]{};
-    int i=0;
+    employee **workers = new employee *[100];
+    int i = 0;
     int choice;
 
     while (1)
     {
-        cout << "1. Ajiltan oruulah, 2. Erembelj haruulah, 3. Hevleh, 9. Exit" << endl;
+        cout << "1. Ajiltan oruulah, 2. Tsalingaar erembeleh, 3. Hevleh, 9. Exit" << endl;
         cout << "Songoltiig oruul: ";
         cin >> choice;
         if (choice == 1)
@@ -121,21 +141,45 @@ int main()
             cout << "Tsagiin orlogo: ";
             cin >> hourly_rate;
 
-            worker[i] = new employee(i, name, role, work_time, hourly_rate);
+            workers[i] = new employee(i + 1, name, role, work_time, hourly_rate);
             i++;
 
-            cout << "Successful" << endl << endl;
-        } else if (choice==2) {
+            cout << "Successful" << endl
+                 << endl;
+        }
+        else if (choice == 2)
+        {
+            employeeBusiness sorter;
+            sorter.sort(workers,i);
+        }
+        else if (choice == 3)
+        {
 
-        } else if (choice==3) {
-            for (int n=0; n<=i; n++) {
-                if (worker[n]->get_emp_id()!=0) {
-                    worker[n]->printData();
+            if (i == 0)
+            {
+                cout << "No employee data" << endl;
+            }
+
+            for (int n = 0; n < i; n++)
+            {
+                cout << endl;
+                if (workers[n]->get_emp_id() != 0)
+                {
+                    workers[n]->printData();
                 }
             }
-        } else if (choice==9) {
+        }
+        else if (choice == 9)
+        {
+            for (int m=0; m<i; m++) {
+                delete workers[m];
+            }
+            delete[] workers;
             break;
         }
-        else { cout << "Invalid choice" << endl;}
+        else
+        {
+            cout << "Invalid choice" << endl;
+        }
     }
 }

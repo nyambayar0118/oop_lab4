@@ -2,9 +2,10 @@
 #define employee_h
 
 // Ажилчин классыг толгой файлд загварчлав
-class employee {
+class employee
+{
     // Ажилчны дугаар, нэр, албан тушаал, ажилласан цаг, цагт олдог орлогын дүнг хадгална
-    private:
+private:
     int emp_id;
     char emp_name[20];
     char emp_role[10];
@@ -12,31 +13,29 @@ class employee {
     float emp_hourly_rate;
 
     // Байгуулагч функцүүд
-    public:
+public:
     employee();
-    employee(int,char[],char[],float,float);
+    employee(int, char[], char[], float, float);
     // Устгагч функцүүд
     ~employee();
 
-
     // Өгөгдлийг хэвлэх, цалин бодох, захирлын цалин бодох функцүүд
-    public:
+public:
     void printData();
     float calcSalary();
 
-    private:
+private:
     float calcBossSalary();
 
-
     // Тухайн өдөрт ажилласан цагийг нэмэгдүүлнэ
-    public:
+public:
     bool addWorkTime(float);
 
     // Get, set функцүүд
-    public:
+public:
     int get_emp_id();
-    char* get_emp_name();
-    char* get_emp_role();
+    char *get_emp_name();
+    char *get_emp_role();
     float get_emp_work_time();
     float get_emp_hourly_rate();
 
@@ -45,7 +44,12 @@ class employee {
     void set_emp_role(char[]);
     // void set_emp_work_time();
     void set_emp_hourly_rate(float);
+};
 
+class employeeBusiness
+{
+public:
+    void sort(employee**,int);
 };
 
 #endif
