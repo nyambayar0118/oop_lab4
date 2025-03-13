@@ -46,8 +46,10 @@ public:
     void set_emp_hourly_rate(float);
 };
 
+// Ажилчин класс дээр үйлдэл хийх бизнес класс
 class employeeBusiness
 {
+    // Ажилчдын мэдээллийг цалингаар нь эрэмбэлнэ
 public:
     void sort(employee**,int);
 };
